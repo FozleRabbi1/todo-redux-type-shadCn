@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/redux/hook";
 import AddTodoModal from "./AddTodoModal";
 import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
@@ -5,6 +6,8 @@ const bgStyle =
   "linear-gradient(to bottom right, rgba(255,255,255,0.1), white, rgba(255,255,255,0.1))";
 
 const TodoContainer = () => {
+  const { todos } = useAppSelector((state) => state.todos);
+
   return (
     <div>
       <div>
@@ -22,10 +25,14 @@ const TodoContainer = () => {
             style={{ background: bgStyle }}
             className=" rounded-[8px] p-3 space-y-3"
           >
-            <TodoCard></TodoCard>
-            <TodoCard></TodoCard>
-            <TodoCard></TodoCard>
-            <TodoCard></TodoCard>
+            {todos.map((item) => (
+              <TodoCard
+                // title={item.title}
+                // description={item.description}
+                // id={item.id}
+                {...item}
+              ></TodoCard>
+            ))}
           </div>
         </div>
       </div>
