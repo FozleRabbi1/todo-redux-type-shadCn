@@ -13,23 +13,43 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { FormEvent, useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { useAppDispatch } from "@/redux/hook";
-import { addTodo } from "@/redux/fretures/todoSlice";
+// import { useAppDispatch } from "@/redux/hook";
+// import { addTodo } from "@/redux/fretures/todoSlice";
+import { useAddTodoMutation } from "@/redux/api/api";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
-  const dispatch = useAppDispatch();
+  const [priority, setPriority] = useState("");
+  console.log(priority);
+  //! for local satate management
+  // const dispatch = useAppDispatch();
+  const [addTodo, { isError, data, isLoading, isSuccess }] =
+    useAddTodoMutation();
+  console.log({ data, isError, isLoading, isSuccess });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const randomString = Math.random().toString(36).substring(2, 9);
+    // const randomString = Math.random().toString(36).substring(2, 9);
     const taskDetails = {
-      id: randomString,
       title: task,
-      description: description,
+      description,
+      priority,
+      isCompleted: false,
     };
-    dispatch(addTodo(taskDetails));
+    console.log(" add todo == ", taskDetails);
+    addTodo(taskDetails);
+    //! for local satate management
+    // dispatch(addTodo(taskDetails));
   };
 
   return (
@@ -62,6 +82,22 @@ const AddTodoModal = () => {
                 className="col-span-3 "
                 placeholder="Type your message here."
               />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4 ">
+              <Label>Priority</Label>
+              <Select onValueChange={(value) => setPriority(value)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select a Hign" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Priority ...</SelectLabel>
+                    <SelectItem value="Hign">Hign</SelectItem>
+                    <SelectItem value="Low">Low</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
