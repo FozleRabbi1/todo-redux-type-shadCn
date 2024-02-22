@@ -30,12 +30,12 @@ const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
-  console.log(priority);
+  // console.log(priority);
   //! for local satate management
   // const dispatch = useAppDispatch();
   const [addTodo, { isError, data, isLoading, isSuccess }] =
     useAddTodoMutation();
-  console.log({ data, isError, isLoading, isSuccess });
+  // console.log({ data, isError, isLoading, isSuccess });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -46,7 +46,7 @@ const AddTodoModal = () => {
       priority,
       isCompleted: false,
     };
-    console.log(" add todo == ", taskDetails);
+    // console.log(" add todo == ", taskDetails);
     addTodo(taskDetails);
     //! for local satate management
     // dispatch(addTodo(taskDetails));

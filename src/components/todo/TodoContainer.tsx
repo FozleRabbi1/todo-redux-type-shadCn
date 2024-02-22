@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AddTodoModal from "./AddTodoModal";
 import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
@@ -6,23 +7,26 @@ const bgStyle =
   "linear-gradient(to bottom right, rgba(255,255,255,0.1), white, rgba(255,255,255,0.1))";
 
 const TodoContainer = () => {
+  const [priority, setPriority] = useState("");
   // From local
   // const { todos } = useAppSelector((state) => state.todos);
 
   // from server
-  const { data: todos, isError, isLoading } = useGetTodosQuery(undefined);
+  // console.log(priority);
+  const { data: todos, isLoading } = useGetTodosQuery(priority);
   if (isLoading) {
     return <p>Loading......</p>;
   }
-
-  console.log(todos.data);
 
   return (
     <div>
       <div>
         <div className="my-5 flex justify-between ">
           <AddTodoModal></AddTodoModal>
-          <TodoFilter></TodoFilter>
+          <TodoFilter
+            priority={priority}
+            setPriority={setPriority}
+          ></TodoFilter>
         </div>
         <div className="bg-primary-gradient w-full  rounded-xl p-1.5  mb-10">
           {/* <div>

@@ -28,10 +28,8 @@ const EditButton = ({ id }) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // console.log(id);
     const taskDetails = { task, description };
     // dispatch(updateTodoList(id, taskDetails));
-    // console.log({ task, description });
   };
 
   return (

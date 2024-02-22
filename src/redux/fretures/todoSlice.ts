@@ -30,11 +30,6 @@ const todoSlice = createSlice({
       task!.isCompleted = !task?.isCompleted;
       state.todos.sort((a, b) => a.isCompleted - b.isCompleted);
     },
-    // updateTodoList: (state, action) => {
-    //   // const updateTask = state.todos.find((item) => item.id === action.payload);
-    //   // console.log(action.payload);
-    //   // console.log(updateTask);
-    // },
   },
 });
 

@@ -1,10 +1,9 @@
-import { removeTodo, toggleComplete } from "@/redux/fretures/todoSlice";
 import { Button } from "../ui/button";
-import { useAppDispatch } from "@/redux/hook";
 import EditButton from "./EditButton";
+import { useDeleteTodoMutation } from "@/redux/api/api";
 
 type TTodoCardProps = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   isCompleted?: boolean;
@@ -12,17 +11,24 @@ type TTodoCardProps = {
 };
 
 const TodoCard = ({
-  id,
+  _id,
   title,
   description,
   isCompleted,
   priority,
 }: TTodoCardProps) => {
   // ======
-  const dispatch = useAppDispatch();
+  const [deletePost, { isLoading: isDeleting }] = useDeleteTodoMutation();
+  if (isDeleting) {
+    // return <p>Loading...</p>;
+  }
+  // const dispatch = useAppDispatch();
   const toggleState = () => {
-    // console.log(id);
-    dispatch(toggleComplete(id));
+    // dispatch(toggleComplete(id));
+  };
+
+  const deleteTodo = (id) => {
+    deletePost(id);
   };
   return (
     <div className="bg-white rounded-md flex justify-between items-center p-3 border ">
@@ -55,7 +61,7 @@ const TodoCard = ({
       </div>
       <p className=" flex-[2]">{description} </p>
       <div className="space-x-5">
-        <Button onClick={() => dispatch(removeTodo(id))} className="bg-red-400">
+        <Button onClick={() => deleteTodo(_id)} className="bg-red-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -71,7 +77,7 @@ const TodoCard = ({
             />
           </svg>
         </Button>
-        <EditButton id={id}></EditButton>
+        <EditButton id={_id}></EditButton>
       </div>
     </div>
   );
