@@ -3,16 +3,12 @@ import AddTodoModal from "./AddTodoModal";
 import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
 import { useGetTodosQuery } from "@/redux/api/api";
+import { TTodoCardProps } from "./todoType";
 const bgStyle =
   "linear-gradient(to bottom right, rgba(255,255,255,0.1), white, rgba(255,255,255,0.1))";
 
 const TodoContainer = () => {
   const [priority, setPriority] = useState("");
-  // From local
-  // const { todos } = useAppSelector((state) => state.todos);
-
-  // from server
-  // console.log(priority);
   const { data: todos, isLoading } = useGetTodosQuery(priority);
   if (isLoading) {
     return <p>Loading......</p>;
@@ -38,7 +34,7 @@ const TodoContainer = () => {
             style={{ background: bgStyle }}
             className=" rounded-[8px] p-3 space-y-3"
           >
-            {todos?.data?.map((item) => (
+            {todos?.data?.map((item: TTodoCardProps) => (
               <TodoCard
                 // title={item.title}
                 // description={item.description}

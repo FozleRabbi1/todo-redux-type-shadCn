@@ -11,9 +11,7 @@ export const baseApi = createApi({
         if (priority) {
           params.append("priority", priority);
         }
-
         return {
-          // url: `/tasks?priority=${priority}`,    // ======>> এই ভাবেউ params send করা যাই
           url: `/tasks`,
           method: "GET",
           params: params,
@@ -29,6 +27,16 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ["todo"],
     }),
+    updateTodo: builder.mutation({
+      query: ({ id, ...data }) => {
+        return {
+          url: `/task/${id}`,
+          method: "PUT",
+          body: data,
+        };
+      },
+      invalidatesTags: ["todo"],
+    }),
     deleteTodo: builder.mutation({
       query: (id) => ({
         url: `/task/${id}`,
@@ -39,5 +47,9 @@ export const baseApi = createApi({
   }),
 });
 
-export const { useGetTodosQuery, useAddTodoMutation, useDeleteTodoMutation } =
-  baseApi;
+export const {
+  useGetTodosQuery,
+  useAddTodoMutation,
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
+} = baseApi;

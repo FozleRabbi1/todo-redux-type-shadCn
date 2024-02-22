@@ -13,23 +13,43 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { useAppDispatch } from "@/redux/hook";
-import { updateTodoList } from "@/redux/fretures/todoSlice";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { useUpdateTodoMutation } from "@/redux/api/api";
 
 type TTaskDetails = {
-  task: string;
+  title: string;
   description: string;
+  id: string;
+  priority: string;
 };
 
-const EditButton = ({ id }) => {
+const EditButton = ({ id, title, description, priority }: TTaskDetails) => {
+  const [updatePost, { isLoading: isUpdating }] = useUpdateTodoMutation();
   const [task, setTask] = useState("");
-  const [description, setDescription] = useState("");
-  //   const dispatch = useAppDispatch();
+  const [descriptionn, setDescription] = useState("");
+  const [priorityy, setPriority] = useState("");
+
+  if (isUpdating) {
+    return <></>;
+  }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const taskDetails = { task, description };
-    // dispatch(updateTodoList(id, taskDetails));
+    const taskDetails = {
+      title: task || title,
+      description: descriptionn || description,
+      isCompleted: false,
+      priority: priorityy || priority,
+    };
+    updatePost({ id, ...taskDetails });
   };
 
   return (
@@ -75,6 +95,22 @@ const EditButton = ({ id }) => {
                 className="col-span-3 "
                 placeholder="Type your message here."
               />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4 ">
+              <Label>Priority</Label>
+              <Select value={priorityy} onValueChange={setPriority}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="High" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Priority ...</SelectLabel>
+                    <SelectItem value="High">High</SelectItem>
+                    <SelectItem value="Low">Low</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>

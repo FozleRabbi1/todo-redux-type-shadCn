@@ -1,14 +1,7 @@
 import { Button } from "../ui/button";
 import EditButton from "./EditButton";
-import { useDeleteTodoMutation } from "@/redux/api/api";
-
-type TTodoCardProps = {
-  _id: string;
-  title: string;
-  description: string;
-  isCompleted?: boolean;
-  priority: string;
-};
+import { useDeleteTodoMutation, useUpdateTodoMutation } from "@/redux/api/api";
+import { TId, TTodoCardProps } from "./todoType";
 
 const TodoCard = ({
   _id,
@@ -19,26 +12,39 @@ const TodoCard = ({
 }: TTodoCardProps) => {
   // ======
   const [deletePost, { isLoading: isDeleting }] = useDeleteTodoMutation();
+  const [updatedData] = useUpdateTodoMutation();
   if (isDeleting) {
     // return <p>Loading...</p>;
   }
-  // const dispatch = useAppDispatch();
-  const toggleState = () => {
-    // dispatch(toggleComplete(id));
+  const toggleState = (id: TId) => {
+    const mainData = {
+      title,
+      description,
+      isCompleted: !isCompleted,
+      priority,
+    };
+    updatedData({ id, ...mainData });
   };
 
-  const deleteTodo = (id) => {
+  const deleteTodo = (id: TId) => {
     deletePost(id);
   };
   return (
     <div className="bg-white rounded-md flex justify-between items-center p-3 border ">
-      <input
+      {/* <input
+        onClick={() => toggleState(_id)}
         className="mr-3"
-        onChange={toggleState}
         type="checkbox"
         name="complete"
         id="complete"
-      />
+        defaultChecked={isCompleted}
+      /> */}
+      <div
+        onClick={() => toggleState(_id)}
+        className={`mr-3 size-3.5 border  rounded cursor-pointer ${
+          isCompleted ? "bg-red-500 border-red-500" : "border-slate-500"
+        } `}
+      ></div>
       <p className="font-semibold  flex-1">{title}</p>
       <div className="flex-1 flex items-center gap-2">
         <div
@@ -77,7 +83,12 @@ const TodoCard = ({
             />
           </svg>
         </Button>
-        <EditButton id={_id}></EditButton>
+        <EditButton
+          id={_id}
+          title={title}
+          description={description}
+          priority={priority}
+        ></EditButton>
       </div>
     </div>
   );
